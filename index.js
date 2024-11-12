@@ -1,8 +1,9 @@
-import {initializeApp, applicationDefault } from 'firebase-admin/app';
-import { getMessaging } from "firebase-admin/messaging";
-import express, { json } from "express";
-import cors from "cors";
-import env from "dotenv";
+const admin= require('firebase-admin');
+const  serviceAccount = require("./serviceAccountKey.json");
+const express = require("express");
+const {getMessaging}= require("firebase-admin/messaging");
+const cors =require("cors");
+const env=require( "dotenv");
 env.config();
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS;
@@ -28,9 +29,9 @@ app.use(
 // });
 
 
-initializeApp({
-  credential: applicationDefault(),
-  projectId: "iot-project-169dd",
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://iot-project-169dd-default-rtdb.asia-southeast1.firebasedatabase.app"
 });
 
 let receivedToken=null;
@@ -70,6 +71,6 @@ app.post("/send", function (req, res) {
   
 });
 
-app.listen(3000, function () {
-  console.log("Server started on port 3000");
+app.listen(3009, function () {
+  console.log("Server started on port 3009");
 });
